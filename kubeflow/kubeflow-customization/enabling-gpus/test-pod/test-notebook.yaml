@@ -1,0 +1,50 @@
+apiVersion: kubeflow.org/v1beta1
+kind: Notebook
+metadata:
+  annotations:
+    notebooks.kubeflow.org/creator: user@example.com
+    notebooks.kubeflow.org/server-type: jupyter
+  labels:
+    app: test-gpu
+  name: test-gpu
+  namespace: kubeflow-user-example-com
+spec:
+  template:
+    spec:
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #         - matchExpressions:
+      #             - key: cloud.google.com/gke-accelerator
+      #               operator: In
+      #               values:
+      #                 - nvidia-tesla-k80
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-tesla-k80
+      containers:
+        - env: []
+          image: nvidia/cuda:11.0.3-runtime-ubuntu20.04
+          imagePullPolicy: IfNotPresent
+          name: test-gpu
+          command: ["/bin/bash", "-c", "--"]
+          args: ["while true; do sleep 600; done;"]
+          resources:
+            limits:
+              nvidia.com/gpu: '1'
+          volumeMounts:
+            - mountPath: /dev/shm
+              name: dshm
+            - mountPath: /home/jovyan
+              name: test-gpu-workspace
+      serviceAccountName: default-editor
+      tolerations: []
+      volumes:
+        - emptyDir:
+            medium: Memory
+          name: dshm
+        - name: test-gpu-workspace
+          persistentVolumeClaim:
+            claimName: test-gpu-workspace
+            readOnly: false
+

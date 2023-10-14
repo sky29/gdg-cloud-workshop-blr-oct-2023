@@ -1,0 +1,44 @@
+# This is a kustomization package used to allow kfctl to
+# bootstrap a profile for the user running kfctl.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- profile-instance-user-1.yaml
+- profile-instance-user-2.yaml
+configMapGenerator:
+- name: default-install-config
+  envs:
+  - params.env
+vars:
+# These vars are used for substituing in the parameters from the config map
+# into the Profiles custom resource.
+- name: user-1
+  objref:
+    kind: ConfigMap
+    name: default-install-config
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.user-1
+- name: profile-name-1
+  objref:
+    kind: ConfigMap
+    name: default-install-config
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.profile-name-1
+- name: user-2
+  objref:
+    kind: ConfigMap
+    name: default-install-config
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.user-2
+- name: profile-name-2
+  objref:
+    kind: ConfigMap
+    name: default-install-config
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.profile-name-2
+configurations:
+- params.yaml

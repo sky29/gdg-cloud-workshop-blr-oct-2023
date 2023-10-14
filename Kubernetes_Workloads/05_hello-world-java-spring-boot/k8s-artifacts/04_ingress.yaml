@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo-ingress
+  namespace: demo
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-clusterissuer"
+    external-dns.alpha.kubernetes.io/hostname: demo1.flaskd.work
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - demo1.flaskd.work
+    secretName: demo1-tls
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: demo-service
+            port: 
+              number: 8080
