@@ -1,0 +1,29 @@
+global:
+  # Set the verbosity of cert-manager. Range of 0 - 6 with 6 being the most verbose.
+  logLevel: 2
+
+cert-manager:
+
+  installCRDs: true
+
+  replicaCount: 1
+
+  # The maximum number of challenges that can be scheduled as 'processing' at once
+  maxConcurrentChallenges: 60
+
+  image:
+    repository: quay.io/jetstack/cert-manager-controller
+    tag: v1.11.0
+
+  prometheus:
+    enabled: false
+    servicemonitor:
+      enabled: false
+      prometheusInstance: default
+      targetPort: 9402
+      path: /metrics
+      interval: 60s
+      scrapeTimeout: 30s
+      labels: {}
+      annotations: {}
+      honorLabels: false

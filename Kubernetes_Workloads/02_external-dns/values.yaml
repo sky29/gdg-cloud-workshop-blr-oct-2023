@@ -1,0 +1,34 @@
+
+external-dns:
+  image:
+    repository: registry.k8s.io/external-dns/external-dns
+    tag: "v0.13.2"
+
+  serviceMonitor:
+    enabled: false
+
+  env: #[]
+    - name: CF_API_TOKEN
+      value: "REPLACE-ME"
+
+  logLevel: info
+  logFormat: text
+
+  sources:
+    - service
+    - ingress
+
+  policy: sync # or upsert-only OR sync
+
+  registry: txt
+  txtOwnerId: ""
+  txtPrefix: ""
+  txtSuffix: ""
+
+  domainFilters: #[]
+    - flaskd.work
+
+  extraArgs: #[]
+    - --zone-id-filter=REPLACE-ME
+
+  provider: cloudflare

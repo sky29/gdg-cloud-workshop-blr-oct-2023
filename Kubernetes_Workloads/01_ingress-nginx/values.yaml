@@ -1,0 +1,37 @@
+
+ingress-nginx:
+
+  controller:
+    name: controller
+
+    image:
+      registry: registry.k8s.io
+      image: ingress-nginx/controller
+      tag: "v1.6.4"
+
+    containerPort:
+      http: 80
+      https: 443
+
+    replicaCount: 1
+
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+    service:
+      enabled: true
+
+      ports:
+        http: 80
+        https: 443
+
+      targetPorts:
+        http: http
+        https: https
+
+      type: LoadBalancer

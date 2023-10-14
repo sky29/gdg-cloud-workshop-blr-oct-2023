@@ -1,0 +1,3 @@
+GKE Private Cluster using Terraform:
+    - https://medium.com/google-cloud/gcp-terraform-to-deploy-private-gke-cluster-bebb225aa7be
+    - https://www.youtube.com/watch?v=wlnrXBodkB4
